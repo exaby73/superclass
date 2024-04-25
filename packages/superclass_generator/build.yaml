@@ -1,0 +1,8 @@
+builders:
+  superclass:
+    import: "package:superclass_generator/builder.dart"
+    builder_factories: ["superclassBuilder"]
+    build_extensions: {".dart": ["superclass.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

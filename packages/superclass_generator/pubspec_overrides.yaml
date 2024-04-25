@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: superclass
+dependency_overrides:
+  superclass:
+    path: ../superclass

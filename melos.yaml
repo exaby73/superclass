@@ -1,0 +1,8 @@
+name: superclass_workspace
+
+packages:
+  - packages/*
+
+scripts:
+  build:example:
+    run: cd packages/superclass_generator/example && dart pub get && dart pub run build_runner watch --delete-conflicting-outputs
