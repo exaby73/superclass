@@ -42,3 +42,9 @@ final class Pick<First extends Object> extends _Superclass {
 
   final Set<String> fields;
 }
+
+final class Required<First extends Object> extends _Superclass {
+  const Required({this.onlyFields = const {}});
+
+  final Set<String> onlyFields;
+}
