@@ -1,24 +1,36 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:superclass/superclass.dart';
+
+part 'example.freezed.dart';
+
+part 'example.superclass.dart';
 
 part 'example.g.dart';
 
-class User {
-  const User(this.name, this.age);
+@freezed
+class User with _$User {
+  const factory User({
+    required String name,
+    int? age,
+    required Profile profile,
+  }) = _User;
 
-  final String name;
-  final int? age;
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
 
-class Profile {
-  const Profile(this.bio);
+@freezed
+class Profile with _$Profile {
+  const factory Profile({required String bio}) = _Profile;
 
-  final String? bio;
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
 }
 
 @Superclass(
+  includeFreezed: true,
+  includeJsonSerialization: true,
   apply: [
-    Merge<User, Profile>(),
-    Required<$PR>(),
+    MakePartial<User>(),
   ],
 )
 typedef UserProfile = $UserProfile;

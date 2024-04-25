@@ -2,21 +2,20 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:superclass_generator/src/field.dart';
 import 'package:superclass_generator/src/utils/logger.dart';
 
-bool isValidField(FieldElement field) {
+bool isValidField(ParameterElement field) {
   return !field.isStatic &&
       !field.isPrivate &&
-      !field.isSynthetic &&
-      !field.isAbstract;
+      !field.isSynthetic;
 }
 
 bool typesAreDefined(List<ClassElement> elements) {
   return elements.every((element) => element.name != 'Object');
 }
 
-extension ListFieldElementExtension on List<FieldElement> {
+extension ListFieldElementExtension on List<ConstructorElement> {
   Map<String, Field> get validMappedFields {
     return Map.fromEntries(
-      where(isValidField).map((field) {
+      first.parameters.where(isValidField).map((field) {
         return MapEntry(
           field.name,
           Field(
@@ -32,6 +31,6 @@ extension ListFieldElementExtension on List<FieldElement> {
 
 extension ClassElementExtension on ClassElement {
   Map<String, Field> validMappedFieldsOrFields(Map<String, Field> fields) {
-    return name == '\$PR' ? fields : this.fields.validMappedFields;
+    return name == '\$PR' ? fields :constructors.validMappedFields;
   }
 }

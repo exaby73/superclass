@@ -19,7 +19,7 @@ Map<String, Field> pick(
 
   final firstFields = firstElement.name == '\$PR'
       ? fields
-      : firstElement.fields.validMappedFields;
+      : firstElement.validMappedFieldsOrFields(fields);
 
   final result = <String, Field>{};
   for (final MapEntry(key: name, value: field) in firstFields.entries) {

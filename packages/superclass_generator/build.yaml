@@ -1,8 +1,9 @@
 builders:
   superclass:
     import: "package:superclass_generator/builder.dart"
-    builder_factories: ["superclassBuilder"]
-    build_extensions: {".dart": ["superclass.g.part"]}
-    auto_apply: dependents
-    build_to: cache
-    applies_builders: ["source_gen|combining_builder"]
+    builder_factories: [ "superclassBuilder" ]
+    build_extensions: { ".dart": [ ".superclass.dart" ] }
+    auto_apply: root_package
+    build_to: source
+    applies_builders: [ "source_gen|combining_builder" ]
+    runs_before: [ "freezed|freezed", "json_serializable|json_serializable" ]

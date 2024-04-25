@@ -9,14 +9,14 @@ final class _Superclass {
 final class Superclass {
   const Superclass({
     required this.apply,
+    this.annotations = const {},
     this.includeFreezed = false,
-    this.includeDartMappable = false,
     this.includeJsonSerialization = false,
   });
 
   final List<_Superclass> apply;
+  final Map<String, List<Object>> annotations;
   final bool includeFreezed;
-  final bool includeDartMappable;
   final bool includeJsonSerialization;
 }
 
@@ -31,8 +31,8 @@ final class Omit<First extends Object> extends _Superclass {
   final Set<String> fields;
 }
 
-final class Partial<First extends Object> extends _Superclass {
-  const Partial({this.onlyFields = const {}});
+final class MakePartial<First extends Object> extends _Superclass {
+  const MakePartial({this.onlyFields = const {}});
 
   final Set<String> onlyFields;
 }
@@ -43,8 +43,8 @@ final class Pick<First extends Object> extends _Superclass {
   final Set<String> fields;
 }
 
-final class Required<First extends Object> extends _Superclass {
-  const Required({this.onlyFields = const {}});
+final class MakeRequired<First extends Object> extends _Superclass {
+  const MakeRequired({this.onlyFields = const {}});
 
   final Set<String> onlyFields;
 }

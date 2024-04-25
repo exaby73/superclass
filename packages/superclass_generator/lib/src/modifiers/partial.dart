@@ -20,7 +20,7 @@ Map<String, Field> partial(
 
   final firstFields = firstElement.name == '\$PR'
       ? fields
-      : firstElement.fields.validMappedFields;
+      : firstElement.validMappedFieldsOrFields(fields);
 
   if (applyTo.isEmpty) {
     applyTo.addAll(firstFields.keys);

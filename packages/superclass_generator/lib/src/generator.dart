@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -28,15 +29,18 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     final (
       apply,
-      includeFreezed,
-      includeDartMappable,
+      annotations,
       includeJsonSerialization,
     ) = (
       annotation.read('apply').listValue,
-      annotation.read('includeFreezed').boolValue,
-      annotation.read('includeDartMappable').boolValue,
+      annotation
+          .read('annotations')
+          .mapValue
+          .map((key, value) => MapEntry(key!.toStringValue()!, value)),
       annotation.read('includeJsonSerialization').boolValue,
     );
+    final includeFreezed =
+        includeJsonSerialization || annotation.read('includeFreezed').boolValue;
 
     if (apply.isEmpty) {
       throw InvalidGenerationSourceError(
@@ -47,8 +51,14 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     final buffer = StringBuffer();
     Map<String, Field> fields = <String, Field>{};
+    final generatedName = '\$${element.name}';
 
-    buffer.write('class \$${element.name} {');
+    if (includeFreezed) {
+      buffer.writeln('@freezed');
+      buffer.write('class $generatedName with _\$$generatedName {');
+    } else {
+      buffer.write('class $generatedName {');
+    }
 
     for (final item in apply) {
       final type = item.type;
@@ -65,7 +75,7 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
               .map((e) => e.toStringValue()!)
               .toSet();
           fields = omit(fields, type, fieldsToOmit);
-        case 'Partial':
+        case 'MakePartial':
           final onlyFields = item
               .getField('onlyFields')!
               .toSetValue()!
@@ -79,7 +89,7 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
               .map((e) => e.toStringValue()!)
               .toSet();
           fields = pick(fields, type, fieldsToPick);
-        case 'Required':
+        case 'MakeRequired':
           final onlyFields = item
               .getField('onlyFields')!
               .toSetValue()!
@@ -98,20 +108,111 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
       );
     }
 
-    buffer.writeln('const \$${element.name}({');
-    for (final field in fields.values) {
-      buffer.writeln('required this.${field.name},');
-    }
-    buffer.writeln('});');
+    if (includeFreezed) {
+      buffer.writeln('const factory $generatedName({');
+      for (final field in fields.values) {
+        final fieldHasAnnotations = annotations.containsKey(field.name) &&
+            !annotations[field.name]!.isNull;
+        if (fieldHasAnnotations) {
+          for (final annotation
+              in _generateAnnotations(annotations[field.name]!.toListValue())) {
+            buffer.writeln(annotation);
+          }
+        }
 
-    for (final field in fields.values) {
-      final suffix =
-          field.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
-      buffer.write('final ${field.type}$suffix ${field.name};');
+        if (field.nullabilitySuffix == NullabilitySuffix.none) {
+          buffer.write('required ');
+        }
+        final suffix =
+            field.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
+        buffer.writeln('${field.type}$suffix ${field.name},');
+      }
+      buffer.writeln('}) = _$generatedName;\n');
+    } else {
+      buffer.writeln('const $generatedName({');
+      for (final field in fields.values) {
+        if (field.nullabilitySuffix == NullabilitySuffix.none) {
+          buffer.write('required ');
+        }
+        buffer.writeln('this.${field.name},');
+      }
+      buffer.writeln('});\n');
+    }
+
+    if (!includeFreezed) {
+      for (final field in fields.values) {
+        final suffix =
+            field.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
+        buffer.write('final ${field.type}$suffix ${field.name};');
+      }
+    }
+
+    if (includeJsonSerialization) {
+      buffer.writeln(
+        'factory $generatedName.fromJson(Map<String, dynamic> json) => _\$${generatedName}FromJson(json);',
+      );
     }
 
     buffer.write('}');
 
     return buffer.toString();
   }
+}
+
+List<String> _generateAnnotations(List<DartObject>? annotations) {
+  if (annotations == null) return [];
+
+  final result = <String>[];
+  for (final annotation in annotations) {
+    final type = annotation.type;
+    final element = type?.element;
+    if (type is! InterfaceType || element is! ClassElement) continue;
+
+    final buffer = StringBuffer();
+    buffer.writeln('@${element.name}(');
+
+    for (final field in element.fields) {
+      final reader = ConstantReader(annotation.getField(field.name));
+      if (reader.isNull) continue;
+
+      final value = _getValueFromReader(reader);
+      if (element.constructors.any(
+        (element) => element.parameters.any(
+          (element) =>
+              element.name == field.name &&
+              element.isInitializingFormal &&
+              element.isPositional,
+        ),
+      )) {
+        buffer.writeln(
+          '$value,',
+        );
+      } else {
+        buffer.writeln(
+          '${field.name}: $value,',
+        );
+      }
+    }
+
+    buffer.writeln(')');
+    result.add(buffer.toString());
+  }
+  return result;
+}
+
+String _getValueFromReader(ConstantReader reader) {
+  if (reader.objectValue.toFunctionValue() != null) {
+    return reader.objectValue.toFunctionValue()!.name;
+  }
+
+  if (reader.objectValue.type?.element is EnumElement) {
+    final enumName = reader.objectValue.type?.element?.name;
+    final name = reader.objectValue.getField('_name')!.toStringValue()!;
+    return '$enumName.$name';
+  }
+
+  return reader.objectValue
+      .toString()
+      .replaceAll(RegExp(r'^\w+\s*\('), '')
+      .replaceAll(RegExp(r'\)$'), '');
 }
