@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
@@ -6,6 +7,7 @@ import 'package:superclass/superclass.dart';
 import 'package:superclass_generator/src/field.dart';
 import 'package:superclass_generator/src/modifiers/merge.dart';
 import 'package:superclass_generator/src/modifiers/omit.dart';
+import 'package:superclass_generator/src/modifiers/partial.dart';
 import 'package:superclass_generator/src/utils/logger.dart';
 
 class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
@@ -61,6 +63,13 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
               .map((e) => e.toStringValue()!)
               .toSet();
           fields = omit(fields, type, fieldsToOmit);
+        case 'Partial':
+          final onlyFields = item
+              .getField('onlyFields')!
+              .toSetValue()!
+              .map((e) => e.toStringValue()!)
+              .toSet();
+          fields = partial(fields, type, onlyFields);
         case _:
           continue;
       }
@@ -80,7 +89,9 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
     buffer.writeln('});');
 
     for (final field in fields.values) {
-      buffer.write('final ${field.type} ${field.name};');
+      final suffix =
+          field.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
+      buffer.write('final ${field.type}$suffix ${field.name};');
     }
 
     buffer.write('}');

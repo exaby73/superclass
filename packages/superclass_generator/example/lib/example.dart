@@ -17,8 +17,8 @@ class Profile {
 
 @Superclass(
   apply: [
-    Merge<User, String>(),
-    Omit<$PR>(fields: {'bio'}),
+    Merge<User, Profile>(),
+    Partial<$PR>(onlyFields: {'bio'}),
   ],
 )
 typedef UserProfile = $UserProfile;

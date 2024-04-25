@@ -30,3 +30,9 @@ final class Omit<First extends Object> extends _Superclass {
 
   final Set<String> fields;
 }
+
+final class Partial<First extends Object> extends _Superclass {
+  const Partial({this.onlyFields = const {}});
+
+  final Set<String> onlyFields;
+}
