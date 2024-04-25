@@ -8,6 +8,7 @@ import 'package:superclass_generator/src/field.dart';
 import 'package:superclass_generator/src/modifiers/merge.dart';
 import 'package:superclass_generator/src/modifiers/omit.dart';
 import 'package:superclass_generator/src/modifiers/partial.dart';
+import 'package:superclass_generator/src/modifiers/pick.dart';
 import 'package:superclass_generator/src/utils/logger.dart';
 
 class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
@@ -70,6 +71,13 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
               .map((e) => e.toStringValue()!)
               .toSet();
           fields = partial(fields, type, onlyFields);
+        case 'Pick':
+          final fieldsToPick = item
+              .getField('fields')!
+              .toSetValue()!
+              .map((e) => e.toStringValue()!)
+              .toSet();
+          fields = pick(fields, type, fieldsToPick);
         case _:
           continue;
       }

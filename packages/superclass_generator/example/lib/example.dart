@@ -19,6 +19,10 @@ class Profile {
   apply: [
     Merge<User, Profile>(),
     Partial<$PR>(onlyFields: {'bio'}),
+
+    Pick<$PR>(fields: {'name', 'bio'}),
+    // Or
+    Omit<$PR>(fields: {'age'}),
   ],
 )
 typedef UserProfile = $UserProfile;

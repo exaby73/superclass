@@ -36,3 +36,9 @@ final class Partial<First extends Object> extends _Superclass {
 
   final Set<String> onlyFields;
 }
+
+final class Pick<First extends Object> extends _Superclass {
+  const Pick({required this.fields});
+
+  final Set<String> fields;
+}
