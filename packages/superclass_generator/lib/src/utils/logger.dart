@@ -10,5 +10,5 @@ void debug(Object? object) {
   buffer.writeln(object);
   buffer.writeln('-' * 20);
 
-  print(buffer.toString());
+  print(buffer);
 }

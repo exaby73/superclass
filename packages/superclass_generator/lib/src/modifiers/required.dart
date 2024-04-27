@@ -4,7 +4,6 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:superclass_generator/src/field.dart';
 import 'package:superclass_generator/src/utils/helpers.dart';
-import 'package:superclass_generator/src/utils/logger.dart';
 
 Map<String, Field> required(
   Map<String, Field> fields,

@@ -6,3 +6,5 @@ packages:
 scripts:
   build:example:
     run: cd packages/superclass_generator/example && dart pub get && dart pub run build_runner watch --delete-conflicting-outputs
+  format:fix:
+    exec: dart format --fix lib && dart fix --apply

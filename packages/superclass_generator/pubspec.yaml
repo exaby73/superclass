@@ -2,7 +2,6 @@ name: superclass_generator
 description: A sample command-line application.
 version: 0.0.1
 repository: https://github.com/exaby73/superclass/tree/main/packages/superclass_generator
-publish_to: none
 
 environment:
   sdk: ^3.3.2
@@ -11,8 +10,7 @@ dependencies:
   analyzer: ^6.4.1
   build: ^2.4.1
   source_gen: ^1.5.0
-  superclass:
-    path: ../superclass
+  superclass: ^0.0.1
 
 dev_dependencies:
   lint: ^2.3.0
