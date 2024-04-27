@@ -11,7 +11,6 @@ import 'package:superclass_generator/src/modifiers/omit.dart';
 import 'package:superclass_generator/src/modifiers/partial.dart';
 import 'package:superclass_generator/src/modifiers/pick.dart';
 import 'package:superclass_generator/src/modifiers/required.dart';
-import 'package:superclass_generator/src/utils/logger.dart';
 
 class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
   @override
