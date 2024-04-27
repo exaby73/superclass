@@ -1,6 +1,6 @@
 builders:
   superclass:
-    import: "package:superclass_generator/builder.dart"
+    import: "package:superclass_generator/superclass_generator.dart"
     builder_factories: [ "superclassBuilder" ]
     build_extensions: { ".dart": [ ".superclass.dart" ] }
     auto_apply: root_package
