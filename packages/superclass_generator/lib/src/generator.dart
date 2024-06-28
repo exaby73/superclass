@@ -56,7 +56,7 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     if (includeFreezed) {
       buffer.writeln('@freezed');
-      buffer.writeln(_generateAnnotations(classAnnotations));
+      _generateAnnotations(classAnnotations).forEach(buffer.writeln);
       buffer.write('class $generatedName with _\$$generatedName {');
     } else {
       buffer.write('class $generatedName {');

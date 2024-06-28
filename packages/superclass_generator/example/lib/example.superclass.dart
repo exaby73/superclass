@@ -8,6 +8,10 @@ part of 'example.dart';
 // **************************************************************************
 
 @freezed
+@Freezed(
+  addImplicitFinal: true,
+  genericArgumentFactories: false,
+)
 class $UserProfile with _$$UserProfile {
   const factory $UserProfile({
     String? name,

@@ -29,6 +29,7 @@ class Profile with _$Profile {
 @Superclass(
   includeFreezed: true,
   includeJsonSerialization: true,
+  classAnnotations: [Freezed()],
   apply: [
     MakePartial<User>(),
   ],
