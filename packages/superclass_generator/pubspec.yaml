@@ -1,6 +1,6 @@
 name: superclass_generator
 description: Generator for superclass package
-version: 0.0.1
+version: 0.1.0
 repository: https://github.com/exaby73/superclass/tree/main/packages/superclass_generator
 
 environment:
@@ -10,7 +10,7 @@ dependencies:
   analyzer: ^6.4.1
   build: ^2.4.1
   source_gen: ^1.5.0
-  superclass: ^0.0.1
+  superclass: ^0.1.0
 
 dev_dependencies:
   lint: ^2.3.0
