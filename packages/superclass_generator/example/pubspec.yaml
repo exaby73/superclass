@@ -11,6 +11,9 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.9.0
   superclass:
+
+dependency_overrides:
+  superclass:
     path: ../../superclass
 
 dev_dependencies:

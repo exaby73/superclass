@@ -28,12 +28,14 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     final (
       apply,
-      annotations,
+      classAnnotations,
+      fieldAnnotations,
       includeJsonSerialization,
     ) = (
       annotation.read('apply').listValue,
+      annotation.read('classAnnotations').listValue,
       annotation
-          .read('annotations')
+          .read('fieldAnnotations')
           .mapValue
           .map((key, value) => MapEntry(key!.toStringValue()!, value)),
       annotation.read('includeJsonSerialization').boolValue,
@@ -54,6 +56,7 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     if (includeFreezed) {
       buffer.writeln('@freezed');
+      buffer.writeln(_generateAnnotations(classAnnotations));
       buffer.write('class $generatedName with _\$$generatedName {');
     } else {
       buffer.write('class $generatedName {');
@@ -110,11 +113,12 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
     if (includeFreezed) {
       buffer.writeln('const factory $generatedName({');
       for (final field in fields.values) {
-        final fieldHasAnnotations = annotations.containsKey(field.name) &&
-            !annotations[field.name]!.isNull;
+        final fieldHasAnnotations = fieldAnnotations.containsKey(field.name) &&
+            !fieldAnnotations[field.name]!.isNull;
         if (fieldHasAnnotations) {
-          for (final annotation
-              in _generateAnnotations(annotations[field.name]!.toListValue())) {
+          for (final annotation in _generateAnnotations(
+            fieldAnnotations[field.name]!.toListValue(),
+          )) {
             buffer.writeln(annotation);
           }
         }

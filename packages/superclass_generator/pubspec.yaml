@@ -1,5 +1,5 @@
 name: superclass_generator
-description: A sample command-line application.
+description: Generator for superclass package
 version: 0.0.1
 repository: https://github.com/exaby73/superclass/tree/main/packages/superclass_generator
 

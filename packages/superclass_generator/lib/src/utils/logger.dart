@@ -10,5 +10,6 @@ void debug(Object? object) {
   buffer.writeln(object);
   buffer.writeln('-' * 20);
 
+  // ignore: avoid_print
   print(buffer);
 }

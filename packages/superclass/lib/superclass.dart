@@ -9,13 +9,15 @@ final class _Superclass {
 final class Superclass {
   const Superclass({
     required this.apply,
-    this.annotations = const {},
+    this.classAnnotations = const [],
+    this.fieldAnnotations = const {},
     this.includeFreezed = false,
     this.includeJsonSerialization = false,
   });
 
   final List<_Superclass> apply;
-  final Map<String, List<Object>> annotations;
+  final List<Object> classAnnotations;
+  final Map<String, List<Object>> fieldAnnotations;
   final bool includeFreezed;
   final bool includeJsonSerialization;
 }
