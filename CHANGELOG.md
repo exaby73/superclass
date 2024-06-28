@@ -11,6 +11,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 Packages with breaking changes:
 
+ - [`superclass_generator` - `v0.2.0`](#superclass_generator---v020)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `superclass_generator` - `v0.2.0`
+
+ - **BREAKING** **FIX**(luthor_generator): fix class annotations generation.
+
+
+## 2024-06-28
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
  - [`superclass` - `v0.1.0`](#superclass---v010)
  - [`superclass_generator` - `v0.1.0`](#superclass_generator---v010)
 
