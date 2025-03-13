@@ -1,3 +1,9 @@
+## 0.3.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**(luthor_generator): Update dependencies.
+
 ## 0.2.0
 
 > Note: This release has breaking changes.
