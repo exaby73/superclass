@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-03-13
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - [`superclass_generator` - `v0.3.0`](#superclass_generator---v030)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `superclass_generator` - `v0.3.0`
+
+ - **BREAKING** **FEAT**(luthor_generator): Update dependencies.
+
+
 ## 2024-06-28
 
 ### Changes
