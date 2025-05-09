@@ -2,9 +2,10 @@ name: superclass
 description: Superclass brings TypeScript Utility Types to Dart.
 version: 0.1.0
 repository: https://github.com/exaby73/superclass/tree/main/packages/superclass
+resolution: workspace
 
 environment:
-  sdk: ^3.3.2
+  sdk: ^3.5.0
 
 dev_dependencies:
   lint: ^2.3.0

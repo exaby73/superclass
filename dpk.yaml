@@ -1,0 +1,4 @@
+catalog:
+  environment:
+    sdk: ^3.5.0
+  resolution: workspace
