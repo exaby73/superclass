@@ -44,3 +44,21 @@ Map<String, dynamic> _$$$UserProfileImplToJson(_$$UserProfileImpl instance) =>
       'age': instance.age,
       'profile': instance.profile,
     };
+
+_$$UserRegistrationFormImpl _$$$UserRegistrationFormImplFromJson(
+        Map<String, dynamic> json) =>
+    _$$UserRegistrationFormImpl(
+      name: json['name'] as String?,
+      street: json['street'] as String,
+      city: json['city'] as String,
+      country: json['country'] as String,
+    );
+
+Map<String, dynamic> _$$$UserRegistrationFormImplToJson(
+        _$$UserRegistrationFormImpl instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'street': instance.street,
+      'city': instance.city,
+      'country': instance.country,
+    };

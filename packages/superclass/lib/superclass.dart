@@ -50,3 +50,31 @@ final class MakeRequired<First extends Object> extends _Superclass {
 
   final Set<String> onlyFields;
 }
+
+final class Rename<First extends Object> extends _Superclass {
+  const Rename({required this.fields});
+
+  final Map<String, String> fields;
+}
+
+final class Intersect<First extends Object, Second extends Object>
+    extends _Superclass {
+  const Intersect();
+}
+
+final class Diff<First extends Object, Second extends Object>
+    extends _Superclass {
+  const Diff();
+}
+
+final class Transform<First extends Object> extends _Superclass {
+  const Transform({required this.types});
+
+  final Map<String, String> types;
+}
+
+final class WithDefaults<First extends Object> extends _Superclass {
+  const WithDefaults({required this.defaults});
+
+  final Map<String, String> defaults;
+}

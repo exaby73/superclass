@@ -11,6 +11,11 @@ import 'package:superclass_generator/src/modifiers/omit.dart';
 import 'package:superclass_generator/src/modifiers/partial.dart';
 import 'package:superclass_generator/src/modifiers/pick.dart';
 import 'package:superclass_generator/src/modifiers/required.dart';
+import 'package:superclass_generator/src/modifiers/rename.dart';
+import 'package:superclass_generator/src/modifiers/intersect.dart';
+import 'package:superclass_generator/src/modifiers/diff.dart';
+import 'package:superclass_generator/src/modifiers/transform.dart';
+import 'package:superclass_generator/src/modifiers/with_defaults.dart';
 
 class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
   @override
@@ -98,6 +103,37 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
               .map((e) => e.toStringValue()!)
               .toSet();
           fields = required(fields, type, onlyFields);
+        case 'Rename':
+          final renameMap = item
+              .getField('fields')!
+              .toMapValue()!
+              .map((key, value) => MapEntry(
+                    key!.toStringValue()!,
+                    value!.toStringValue()!,
+                  ));
+          fields = rename(fields, type, renameMap);
+        case 'Intersect':
+          fields = intersect(fields, type);
+        case 'Diff':
+          fields = diff(fields, type);
+        case 'Transform':
+          final typeMap = item
+              .getField('types')!
+              .toMapValue()!
+              .map((key, value) => MapEntry(
+                    key!.toStringValue()!,
+                    value!.toStringValue()!,
+                  ));
+          fields = transform(fields, type, typeMap);
+        case 'WithDefaults':
+          final defaults = item
+              .getField('defaults')!
+              .toMapValue()!
+              .map((key, value) => MapEntry(
+                    key!.toStringValue()!,
+                    value!.toStringValue()!,
+                  ));
+          fields = withDefaults(fields, type, defaults);
         case _:
           continue;
       }
@@ -123,21 +159,23 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
           }
         }
 
-        if (field.nullabilitySuffix == NullabilitySuffix.none) {
+        if (field.nullabilitySuffix == NullabilitySuffix.none && field.defaultValue == null) {
           buffer.write('required ');
         }
         final suffix =
             field.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
-        buffer.writeln('${field.type}$suffix ${field.name},');
+        final defaultPart = field.defaultValue != null ? '@Default(${field.defaultValue}) ' : '';
+        buffer.writeln('$defaultPart${field.type}$suffix ${field.name},');
       }
       buffer.writeln('}) = _$generatedName;\n');
     } else {
       buffer.writeln('const $generatedName({');
       for (final field in fields.values) {
-        if (field.nullabilitySuffix == NullabilitySuffix.none) {
+        if (field.nullabilitySuffix == NullabilitySuffix.none && field.defaultValue == null) {
           buffer.write('required ');
         }
-        buffer.writeln('this.${field.name},');
+        final defaultPart = field.defaultValue != null ? ' = ${field.defaultValue}' : '';
+        buffer.writeln('this.${field.name}$defaultPart,');
       }
       buffer.writeln('});\n');
     }
