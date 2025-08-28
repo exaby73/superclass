@@ -1,3 +1,7 @@
+## 0.6.0
+
+- **FEAT**: Update dependencies
+
 ## 0.5.0
 
 - **FEAT**: Implement `Rename<T>` modifier for field renaming transformations

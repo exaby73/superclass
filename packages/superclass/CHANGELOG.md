@@ -1,3 +1,7 @@
+## 0.6.0
+
+- **FEAT**: Update dependencies
+
 ## 0.5.0
 
 - **FEAT**: Add `Rename<T>` utility type for field renaming with API compatibility
@@ -13,8 +17,8 @@
 
 > Note: This release has breaking changes.
 
- - **BREAKING** **FEAT**: add support for class level annotations.
+- **BREAKING** **FEAT**: add support for class level annotations.
 
 ## 0.0.1
 
- - Initial release
+- Initial release

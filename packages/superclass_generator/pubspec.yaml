@@ -1,6 +1,6 @@
 name: superclass_generator
 description: Generator for superclass package
-version: 0.5.0
+version: 0.6.0
 repository: https://github.com/exaby73/superclass/tree/main/packages/superclass_generator
 resolution: workspace
 
@@ -8,10 +8,10 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
-  analyzer: ^7.4.0
-  build: ^2.4.2
-  source_gen: ^2.0.0
-  superclass: ^0.5.0
+  analyzer: ^7.0.0
+  build: ^3.0.2
+  source_gen: ^3.0.0
+  superclass: ^0.6.0
 
 dev_dependencies:
   lint: ^2.3.0
