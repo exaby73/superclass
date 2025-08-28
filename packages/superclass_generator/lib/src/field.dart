@@ -1,17 +1,22 @@
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 
 class Field {
-  const Field({
+  Field({
     required this.name,
-    required this.type,
-    required this.nullabilitySuffix,
+    required String type,
+    NullabilitySuffix? nullabilitySuffix,
     this.defaultValue,
-  });
+  }) {
+    final isNull = type.endsWith('?');
+    this.type = type.replaceAll('?', '');
+    this.nullabilitySuffix = nullabilitySuffix ??
+        (isNull ? NullabilitySuffix.question : NullabilitySuffix.none);
+  }
 
   final String name;
-  final String type;
-  final NullabilitySuffix nullabilitySuffix;
+  late final String type;
   final String? defaultValue;
+  late final NullabilitySuffix nullabilitySuffix;
 
   Field copyWith({
     String? name,

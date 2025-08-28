@@ -6,31 +6,27 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
-      name: json['name'] as String,
-      age: (json['age'] as num?)?.toInt(),
-      profile: Profile.fromJson(json['profile'] as Map<String, dynamic>),
-    );
+_User _$UserFromJson(Map<String, dynamic> json) => _User(
+  name: json['name'] as String,
+  age: (json['age'] as num?)?.toInt(),
+  profile: Profile.fromJson(json['profile'] as Map<String, dynamic>),
+);
 
-Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'age': instance.age,
-      'profile': instance.profile,
-    };
+Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
+  'name': instance.name,
+  'age': instance.age,
+  'profile': instance.profile,
+};
 
-_$ProfileImpl _$$ProfileImplFromJson(Map<String, dynamic> json) =>
-    _$ProfileImpl(
-      bio: json['bio'] as String,
-    );
+_Profile _$ProfileFromJson(Map<String, dynamic> json) =>
+    _Profile(bio: json['bio'] as String);
 
-Map<String, dynamic> _$$ProfileImplToJson(_$ProfileImpl instance) =>
-    <String, dynamic>{
-      'bio': instance.bio,
-    };
+Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
+  'bio': instance.bio,
+};
 
-_$$UserProfileImpl _$$$UserProfileImplFromJson(Map<String, dynamic> json) =>
-    _$$UserProfileImpl(
+_$UserProfile _$$UserProfileFromJson(Map<String, dynamic> json) =>
+    _$UserProfile(
       name: json['name'] as String?,
       age: (json['age'] as num?)?.toInt(),
       profile: json['profile'] == null
@@ -38,27 +34,27 @@ _$$UserProfileImpl _$$$UserProfileImplFromJson(Map<String, dynamic> json) =>
           : Profile.fromJson(json['profile'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$$UserProfileImplToJson(_$$UserProfileImpl instance) =>
+Map<String, dynamic> _$$UserProfileToJson(_$UserProfile instance) =>
     <String, dynamic>{
       'name': instance.name,
       'age': instance.age,
       'profile': instance.profile,
     };
 
-_$$UserRegistrationFormImpl _$$$UserRegistrationFormImplFromJson(
-        Map<String, dynamic> json) =>
-    _$$UserRegistrationFormImpl(
-      name: json['name'] as String?,
-      street: json['street'] as String,
-      city: json['city'] as String,
-      country: json['country'] as String,
-    );
+_$UserRegistrationForm _$$UserRegistrationFormFromJson(
+  Map<String, dynamic> json,
+) => _$UserRegistrationForm(
+  name: json['name'] as String?,
+  street: json['street'] as String,
+  city: json['city'] as String,
+  country: json['country'] as String,
+);
 
-Map<String, dynamic> _$$$UserRegistrationFormImplToJson(
-        _$$UserRegistrationFormImpl instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'street': instance.street,
-      'city': instance.city,
-      'country': instance.country,
-    };
+Map<String, dynamic> _$$UserRegistrationFormToJson(
+  _$UserRegistrationForm instance,
+) => <String, dynamic>{
+  'name': instance.name,
+  'street': instance.street,
+  'city': instance.city,
+  'country': instance.country,
+};

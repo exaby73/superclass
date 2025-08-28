@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:superclass_generator/src/field.dart';
@@ -6,8 +6,8 @@ import 'package:superclass_generator/src/utils/helpers.dart';
 
 Map<String, Field> merge(Map<String, Field> fields, InterfaceType type) {
   final [first, second] = type.typeArguments;
-  final (firstElement, secondElement) = (first.element, second.element);
-  if (firstElement is! ClassElement || secondElement is! ClassElement) {
+  final (firstElement, secondElement) = (first.element3, second.element3);
+  if (firstElement is! ClassElement2 || secondElement is! ClassElement2) {
     return fields;
   }
   if (!typesAreDefined([firstElement, secondElement])) {

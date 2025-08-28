@@ -1,30 +1,30 @@
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:superclass/superclass.dart';
 import 'package:superclass_generator/src/field.dart';
+import 'package:superclass_generator/src/modifiers/diff.dart';
+import 'package:superclass_generator/src/modifiers/intersect.dart';
 import 'package:superclass_generator/src/modifiers/merge.dart';
 import 'package:superclass_generator/src/modifiers/omit.dart';
 import 'package:superclass_generator/src/modifiers/partial.dart';
 import 'package:superclass_generator/src/modifiers/pick.dart';
-import 'package:superclass_generator/src/modifiers/required.dart';
 import 'package:superclass_generator/src/modifiers/rename.dart';
-import 'package:superclass_generator/src/modifiers/intersect.dart';
-import 'package:superclass_generator/src/modifiers/diff.dart';
+import 'package:superclass_generator/src/modifiers/required.dart';
 import 'package:superclass_generator/src/modifiers/transform.dart';
 import 'package:superclass_generator/src/modifiers/with_defaults.dart';
 
 class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
   @override
   String generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    if (element is! TypeAliasElement) {
+    if (element is! TypeAliasElement2) {
       throw InvalidGenerationSourceError(
         '`@Superclass` can only be used on typedefs.',
         element: element,
@@ -57,7 +57,7 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     final buffer = StringBuffer();
     Map<String, Field> fields = <String, Field>{};
-    final generatedName = '\$${element.name}';
+    final generatedName = '\$${element.name3}';
 
     if (includeFreezed) {
       buffer.writeln('@freezed');
@@ -69,7 +69,7 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     for (final item in apply) {
       final type = item.type;
-      final name = type?.element?.name;
+      final name = type?.element3?.name3;
       if (type is! InterfaceType || name == null) continue;
 
       switch (name) {
@@ -159,22 +159,27 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
           }
         }
 
-        if (field.nullabilitySuffix == NullabilitySuffix.none && field.defaultValue == null) {
+        if (field.nullabilitySuffix == NullabilitySuffix.none &&
+            field.defaultValue == null) {
           buffer.write('required ');
         }
+        final defaultPart = field.defaultValue != null
+            ? '@Default(${field.defaultValue}) '
+            : '';
         final suffix =
             field.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
-        final defaultPart = field.defaultValue != null ? '@Default(${field.defaultValue}) ' : '';
         buffer.writeln('$defaultPart${field.type}$suffix ${field.name},');
       }
       buffer.writeln('}) = _$generatedName;\n');
     } else {
       buffer.writeln('const $generatedName({');
       for (final field in fields.values) {
-        if (field.nullabilitySuffix == NullabilitySuffix.none && field.defaultValue == null) {
+        if (field.nullabilitySuffix == NullabilitySuffix.none &&
+            field.defaultValue == null) {
           buffer.write('required ');
         }
-        final defaultPart = field.defaultValue != null ? ' = ${field.defaultValue}' : '';
+        final defaultPart =
+            field.defaultValue != null ? ' = ${field.defaultValue}' : '';
         buffer.writeln('this.${field.name}$defaultPart,');
       }
       buffer.writeln('});\n');
@@ -206,21 +211,21 @@ List<String> _generateAnnotations(List<DartObject>? annotations) {
   final result = <String>[];
   for (final annotation in annotations) {
     final type = annotation.type;
-    final element = type?.element;
-    if (type is! InterfaceType || element is! ClassElement) continue;
+    final element = type?.element3;
+    if (type is! InterfaceType || element is! ClassElement2) continue;
 
     final buffer = StringBuffer();
-    buffer.writeln('@${element.name}(');
+    buffer.writeln('@${element.name3}(');
 
-    for (final field in element.fields) {
-      final reader = ConstantReader(annotation.getField(field.name));
+    for (final field in element.fields2) {
+      final reader = ConstantReader(annotation.getField(field.name3!));
       if (reader.isNull) continue;
 
       final value = _getValueFromReader(reader);
-      if (element.constructors.any(
-        (element) => element.parameters.any(
+      if (element.constructors2.any(
+        (element) => element.formalParameters.any(
           (element) =>
-              element.name == field.name &&
+              element.name3 == field.name3 &&
               element.isInitializingFormal &&
               element.isPositional,
         ),
@@ -230,7 +235,7 @@ List<String> _generateAnnotations(List<DartObject>? annotations) {
         );
       } else {
         buffer.writeln(
-          '${field.name}: $value,',
+          '${field.name3}: $value,',
         );
       }
     }
@@ -242,12 +247,12 @@ List<String> _generateAnnotations(List<DartObject>? annotations) {
 }
 
 String _getValueFromReader(ConstantReader reader) {
-  if (reader.objectValue.toFunctionValue() != null) {
-    return reader.objectValue.toFunctionValue()!.name;
+  if (reader.objectValue.toFunctionValue2() != null) {
+    return reader.objectValue.toFunctionValue2()!.name3!;
   }
 
-  if (reader.objectValue.type?.element is EnumElement) {
-    final enumName = reader.objectValue.type?.element?.name;
+  if (reader.objectValue.type?.element3 is EnumElement2) {
+    final enumName = reader.objectValue.type?.element3?.name3;
     final name = reader.objectValue.getField('_name')!.toStringValue()!;
     return '$enumName.$name';
   }

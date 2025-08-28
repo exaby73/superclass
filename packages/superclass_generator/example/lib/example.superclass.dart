@@ -9,36 +9,24 @@ part of 'example.dart';
 // **************************************************************************
 
 @freezed
-@Freezed(
-  addImplicitFinal: true,
-  genericArgumentFactories: false,
-)
+@Freezed(addImplicitFinal: true, genericArgumentFactories: false)
 abstract class $UserProfile with _$$UserProfile {
-  const factory $UserProfile({
-    String? name,
-    int? age,
-    Profile? profile,
-  }) = _$UserProfile;
+  const factory $UserProfile({String? name, int? age, Profile? profile}) =
+      _$UserProfile;
 
   factory $UserProfile.fromJson(Map<String, dynamic> json) =>
       _$$UserProfileFromJson(json);
 }
 
 class $PublicUserUpdate {
-  const $PublicUserUpdate({
-    this.name,
-    this.age,
-  });
+  const $PublicUserUpdate({this.name, this.age});
 
   final String? name;
   final int? age;
 }
 
 class $RequiredUserInfo {
-  const $RequiredUserInfo({
-    required this.name,
-    required this.age,
-  });
+  const $RequiredUserInfo({required this.name, required this.age});
 
   final String name;
   final int age;
@@ -70,29 +58,20 @@ class $UserApiDto {
 }
 
 class $CommonUserEmployee {
-  const $CommonUserEmployee({
-    required this.name,
-    this.age,
-  });
+  const $CommonUserEmployee({required this.name, this.age});
 
   final String name;
   final int? age;
 }
 
 class $UserSpecificFields {
-  const $UserSpecificFields({
-    required this.profile,
-  });
+  const $UserSpecificFields({required this.profile});
 
   final Profile profile;
 }
 
 class $UserJsonDto {
-  const $UserJsonDto({
-    required this.name,
-    this.age,
-    required this.profile,
-  });
+  const $UserJsonDto({required this.name, this.age, required this.profile});
 
   final String name;
   final String? age;
@@ -100,11 +79,7 @@ class $UserJsonDto {
 }
 
 class $ComplexUserTransform {
-  const $ComplexUserTransform({
-    required this.fullName,
-    this.age,
-    this.profile,
-  });
+  const $ComplexUserTransform({required this.fullName, this.age, this.profile});
 
   final String fullName;
   final String? age;
@@ -112,10 +87,7 @@ class $ComplexUserTransform {
 }
 
 class $PersonInfo {
-  const $PersonInfo({
-    required this.personName,
-    required this.age,
-  });
+  const $PersonInfo({required this.personName, required this.age});
 
   final String personName;
   final String age;
