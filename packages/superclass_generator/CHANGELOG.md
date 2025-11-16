@@ -1,3 +1,11 @@
+## 0.7.0
+
+- **FEAT**: Migrate from deprecated analyzer element2 API to stable element API
+- **FEAT**: Update analyzer to ^8.0.0
+- **FEAT**: Update build to ^4.0.0
+- **FEAT**: Update source_gen to ^4.0.0
+- **FEAT**: Broaden SDK compatibility to ^3.5.0
+
 ## 0.6.0
 
 - **FEAT**: Update dependencies

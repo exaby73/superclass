@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:superclass_generator/src/field.dart';
@@ -10,8 +10,8 @@ Map<String, Field> rename(
   Map<String, String> renameMap,
 ) {
   final [first] = type.typeArguments;
-  final firstElement = first.element3;
-  if (firstElement is! ClassElement2) return fields;
+  final firstElement = first.element;
+  if (firstElement is! ClassElement) return fields;
   if (!typesAreDefined([firstElement])) {
     throw InvalidGenerationSourceError("Types for 'Rename' must be defined.");
   }

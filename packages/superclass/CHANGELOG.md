@@ -1,3 +1,7 @@
+## 0.7.0
+
+- **FEAT**: Update version to match superclass_generator
+
 ## 0.6.0
 
 - **FEAT**: Update dependencies

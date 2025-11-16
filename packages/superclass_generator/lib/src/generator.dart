@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
@@ -20,11 +20,11 @@ import 'package:superclass_generator/src/modifiers/with_defaults.dart';
 class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
   @override
   String generateForAnnotatedElement(
-    Element2 element,
+    Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    if (element is! TypeAliasElement2) {
+    if (element is! TypeAliasElement) {
       throw InvalidGenerationSourceError(
         '`@Superclass` can only be used on typedefs.',
         element: element,
@@ -57,7 +57,7 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     final buffer = StringBuffer();
     Map<String, Field> fields = <String, Field>{};
-    final generatedName = '\$${element.name3}';
+    final generatedName = '\$${element.name}';
 
     if (includeFreezed) {
       buffer.writeln('@freezed');
@@ -69,7 +69,7 @@ class SuperclassGenerator extends GeneratorForAnnotation<Superclass> {
 
     for (final item in apply) {
       final type = item.type;
-      final name = type?.element3?.name3;
+      final name = type?.element?.name;
       if (type is! InterfaceType || name == null) continue;
 
       switch (name) {
@@ -211,21 +211,21 @@ List<String> _generateAnnotations(List<DartObject>? annotations) {
   final result = <String>[];
   for (final annotation in annotations) {
     final type = annotation.type;
-    final element = type?.element3;
-    if (type is! InterfaceType || element is! ClassElement2) continue;
+    final element = type?.element;
+    if (type is! InterfaceType || element is! ClassElement) continue;
 
     final buffer = StringBuffer();
-    buffer.writeln('@${element.name3}(');
+    buffer.writeln('@${element.name}(');
 
-    for (final field in element.fields2) {
-      final reader = ConstantReader(annotation.getField(field.name3!));
+    for (final field in element.fields) {
+      final reader = ConstantReader(annotation.getField(field.name!));
       if (reader.isNull) continue;
 
       final value = _getValueFromReader(reader);
-      if (element.constructors2.any(
+      if (element.constructors.any(
         (element) => element.formalParameters.any(
           (element) =>
-              element.name3 == field.name3 &&
+              element.name == field.name &&
               element.isInitializingFormal &&
               element.isPositional,
         ),
@@ -235,7 +235,7 @@ List<String> _generateAnnotations(List<DartObject>? annotations) {
         );
       } else {
         buffer.writeln(
-          '${field.name3}: $value,',
+          '${field.name}: $value,',
         );
       }
     }
@@ -247,12 +247,12 @@ List<String> _generateAnnotations(List<DartObject>? annotations) {
 }
 
 String _getValueFromReader(ConstantReader reader) {
-  if (reader.objectValue.toFunctionValue2() != null) {
-    return reader.objectValue.toFunctionValue2()!.name3!;
+  if (reader.objectValue.toFunctionValue() != null) {
+    return reader.objectValue.toFunctionValue()!.name!;
   }
 
-  if (reader.objectValue.type?.element3 is EnumElement2) {
-    final enumName = reader.objectValue.type?.element3?.name3;
+  if (reader.objectValue.type?.element is EnumElement) {
+    final enumName = reader.objectValue.type?.element?.name;
     final name = reader.objectValue.getField('_name')!.toStringValue()!;
     return '$enumName.$name';
   }
