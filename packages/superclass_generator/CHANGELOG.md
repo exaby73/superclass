@@ -1,3 +1,7 @@
+## 0.8.0
+
+- **FEAT**: Update `analyzer` to ^9.0.0
+
 ## 0.7.0
 
 - **FEAT**: Migrate from deprecated analyzer element2 API to stable element API

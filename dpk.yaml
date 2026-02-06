@@ -1,4 +1,16 @@
+version: ^0.6.5
+
 catalog:
   environment:
     sdk: ^3.5.0
   resolution: workspace
+
+  dependencies:
+    analyzer: ^9.0.0
+    superclass: ^0.8.0
+
+scripts:
+  publish:all:
+    command: dart pub publish --force
+    runInPackages:
+      - packages/*
